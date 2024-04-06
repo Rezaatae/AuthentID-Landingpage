@@ -1,3 +1,11 @@
+## AuthentID landing page
+A simple landing page for AuthentID.
+
+### Technical description
+Using the NextJs React framework.
+Tailwind CSS for front-end - used tailBlocks for quick contruction of the front-end.
+Mailchimp API integration for collecting emails.
+_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
