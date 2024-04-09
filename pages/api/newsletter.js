@@ -1,32 +1,8 @@
-import axios from "axios";
-
-function getRequestParams(email){
-    const API_KEY = process.env.MAILCHIMP_API_KEY
-    const LIST_ID = process.env.MAILCHIMP_LIST_ID
-
-    const DATACENTER = process.env.MAILCHIMP_API_KEY.split("-")[1]
-
-    const url = `https://${DATACENTER}.api.mailchimp.com/3.0/`
-
-    const data = {
-        email_address: email,
-        status: "subscribe",
-    };
-
-    const base64ApiKey = Buffer.from(`anystring:${API_KEY}`).toString("base64");
-    const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${base64ApiKey}`,
-    };
-
-    return {
-        url,
-        data,
-        headers,
-    };
-};
-
 export default async (req, res) => {
+    const FORM_ID = process.env.CONVERTKIT_FORM_ID
+    const API_KEY = process.env.CONVERTKIT_API_KEY
+    const BASE_URL = "https://api.covertkit.com/v3"
+        
     const { email } = req.body;
     console.log("reztest email")
     console.log(email)
@@ -38,9 +14,21 @@ export default async (req, res) => {
         });
     }
     try {
-        const { url, data, headers } = getRequestParams(email);
-        const response = await axios.post(url, data, { headers });
-        return res.status(201).json({error : null});
+        console.log("reztest hit addListMember");
+        const url = [BASE_URL, `forms`, FORM_ID, `subscribe`].join('/');
+        const data = {
+            api_key: API_KEY,
+            email: email,
+        }
+
+        const response = await fetch(url, {
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json; charset=utf-8'},
+            method: 'POST'
+        });
+        if(response.status == 200){
+            return res.status(200).json({error : null});
+        }
     }catch(error){
         console.log("reztest something wen wong mush")
         return res.status(400).json({
